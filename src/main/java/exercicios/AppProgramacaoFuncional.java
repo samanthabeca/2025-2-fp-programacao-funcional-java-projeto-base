@@ -1,6 +1,10 @@
 package exercicios;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Comparator;
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * Aplicação de exemplo de princípios de programação funcional em Java,
@@ -23,6 +27,13 @@ public class AppProgramacaoFuncional {
 
     public AppProgramacaoFuncional() {
 
+        double maiorNota = estudantes.stream()
+                .filter(e -> e.getSexo() == 'M')
+                .mapToDouble((e) -> e.getNota())
+                .max()
+                .orElse(0);
+
+        System.out.println(maiorNota);
     }
 
     public static void main(String[] args) {

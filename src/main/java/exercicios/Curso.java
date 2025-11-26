@@ -73,4 +73,17 @@ public class Curso implements Comparable<Curso> {
 
         return this.nome.compareTo(other.nome);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Curso curso = (Curso) o;
+        return id == curso.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(id);
+    }
 }
