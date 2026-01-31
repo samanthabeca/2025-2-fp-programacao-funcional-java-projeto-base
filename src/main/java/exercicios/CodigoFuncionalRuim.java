@@ -45,37 +45,47 @@ public class CodigoFuncionalRuim {
     );
 
     public CodigoFuncionalRuim() {
-        codigoRuim1();
-        correcao1();
+//        codigoRuim1();
+//        correcao1();
+//
+//        System.out.println();
+//        codigoRuim2();
+//        codigoRuim3();
+//        correcao2and3();
+//
+//        System.out.println();
+//        codigoRuim4();
 
-        System.out.println();
-        codigoRuim2();
-        codigoRuim3();
-        correcao2and3();
-
-        System.out.println();
-        codigoRuim4();
-        correcao4();
-
-        System.out.println();
-        codigoRuim5();
-        correcao5();
-
-        System.out.println();
-        codigoRuim6_1();
-        codigoRuim6_2();
-        correcao6();
-
-        System.out.println();
-        codigoRuim7();
-        correcao7();
-
-        System.out.println();
+//        System.out.println();
+//        codigoRuim5();
+//        correcao5();
+//
+//        System.out.println();
+//        codigoRuim6_1();
+//        codigoRuim6_2();
+//        correcao6();
+//
+//        System.out.println();
+//        codigoRuim7();
+//        correcao7();
+//
+//        System.out.println();
         codigoRuim8();
+        correcao8();
     }
 
     public static void main(String[] args) {
         new CodigoFuncionalRuim();
+    }
+
+    private static String tipoPoligono(List<Integer> distancias) {
+        return switch (distancias.size()) {
+            case 3 -> "Triângulo";
+            case 4 -> "Quadrilátero";
+            case 5 -> "Pentágono";
+            case 6 -> "Hexágono";
+            default -> "Polígono de %d lados".formatted(distancias.size());
+        };
     }
 
     /**
@@ -127,6 +137,13 @@ public class CodigoFuncionalRuim {
      */
     private void correcao1() {
 
+        var totalCidadesMap =
+            listaCidadesPorLetraInicial
+                    .stream()
+                    .collect(toMap(cidades -> cidades.getFirst().charAt(0),
+                            List::size,
+                            Integer::sum));
+        System.out.println("Total de cidades por letra: " + totalCidadesMap);
     }
 
     /**
@@ -174,7 +191,11 @@ public class CodigoFuncionalRuim {
      * @see #codigoRuim3()
      */
     private void correcao2and3() {
+        var totalCidadesList =
+                listaCidadesPorLetraInicial.stream().map(List::size)
+                        .toList();
 
+        System.out.println("Total de cidades em cada grupo: " + totalCidadesList);
     }
 
     /**
@@ -191,15 +212,7 @@ public class CodigoFuncionalRuim {
         var nomePoligonos =
             distanciasPoligonos
               .stream()
-              .map(distancias -> {
-                 switch (distancias.size()) {
-                   case 3: return "Triângulo";
-                   case 4: return "Quadrilátero";
-                   case 5: return "Pentágono";
-                   case 6: return "Hexágono";
-                   default: return "Polígono de %d lados".formatted(distancias.size());
-                 }
-              })
+              .map(CodigoFuncionalRuim::tipoPoligono)
               .toList();
 
         System.out.println("Tipos de polígonos: " + nomePoligonos);
@@ -210,9 +223,6 @@ public class CodigoFuncionalRuim {
      *
      * @see #codigoRuim4()
      */
-    private void correcao4() {
-
-    }
 
     /**
      * Obtem apenas os polígonos que tem mais de 3 lados.
@@ -236,7 +246,12 @@ public class CodigoFuncionalRuim {
      * @see #codigoRuim5()
      */
     private void correcao5() {
-
+        var list =
+            distanciasPoligonos
+               .stream()
+               .filter(distancias -> distancias.size() >= 4)
+               .toList();
+        System.out.println("Polígonos com mais de 3 lados: " + list);
     }
 
     /**
@@ -287,7 +302,17 @@ public class CodigoFuncionalRuim {
      * @see #codigoRuim6_2()
      */
     private void correcao6() {
+        var perimetrosList =
+            distanciasPoligonos
+                 .stream()
+                 .flatMap(
+         distancias -> distancias
+                     .stream()
+                     .reduce(Integer::sum)
+                     .stream())
+                 .toList();
 
+        System.out.println("Perímetros: " + perimetrosList);
     }
 
     /**
@@ -299,6 +324,9 @@ public class CodigoFuncionalRuim {
      */
     private void codigoRuim7() {
         // Um mapa onde a chave é um estado e o valor é o total de cidades dele
+        // LinkedHashMap mantém os elementos na mesma ordem que foram inseridos
+        // TreeMap mantém os elementos pela ordem natural da chave
+
         final Map<String, Integer> cidadesPorEstado = Map.of(
                 "BA", 417,
                 "CE", 184,
@@ -316,7 +344,11 @@ public class CodigoFuncionalRuim {
                 .entrySet()
                 .stream()
                 .filter(e -> e.getValue() > 300)
-                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
+                .collect(
+                        toMap(
+                              Map.Entry::getKey,
+                              Map.Entry::getValue)
+                );
 
         System.out.println("Estados com mais de 300 cidades:");
         map.forEach(
@@ -329,7 +361,36 @@ public class CodigoFuncionalRuim {
      * e coleta os dados filtados em um novo {@link TreeMap}.
      */
     private void correcao7() {
+        final Map<String, Integer> cidadesPorEstado = new TreeMap<>(Map.of(
+                "BA", 417,
+                "CE", 184,
+                "DF", 1,
+                "ES", 78,
+                "GO", 246,
+                "MG", 853,
+                "PA", 144,
+                "RS", 497,
+                "SP", 645,
+                "TO", 139
+        ));
 
+        var map = cidadesPorEstado
+                .entrySet()
+                .stream()
+                .filter(e -> e.getValue() > 300)
+                .collect(
+                        toMap(
+                                Map.Entry::getKey,
+                                Map.Entry::getValue,
+                                (_total1, total2) -> total2,
+                                TreeMap::new
+                        )
+                );
+
+        System.out.println("Estados com mais de 300 cidades:");
+        map.forEach(
+                (estado, cidades) -> System.out.printf("%s: %d cidades%n", estado, cidades)
+        );
     }
 
     /**
@@ -347,4 +408,14 @@ public class CodigoFuncionalRuim {
 
         System.out.println("Lista de todas as cidades: " + lista);
     }
+
+    private void correcao8() {
+        var lista = listaCidadesPorLetraInicial
+                .stream()
+                .flatMap(List::stream)
+                .toList();
+
+        System.out.println("Lista de todas as cidades: " + lista);
+    }
 }
+
