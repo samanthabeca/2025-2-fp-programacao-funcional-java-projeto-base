@@ -13,7 +13,7 @@
  * Adicionalmente, coloar regras de negócio importantes em variáveis locais,
  * torna difícil para outros desenvolvedores localizarem tais implementações.</p>
  *
- * <p>Veja o pacote {@link exercicios.vendas} para uma implementação mais adequada.</p>
+ * <p>Veja o pacote {@link exercicios.vendas_bkp} para uma implementação mais adequada.</p>
  *
  * @author Manoel Campos
  * @see exercicios.vendasruim.RealizaVendaRuim
